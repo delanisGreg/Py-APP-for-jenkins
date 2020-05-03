@@ -1,22 +1,24 @@
-FROM ubuntu:18.04
+FROM python:3
 
 MAINTANER delanisGreg "gregdelanis@gmail.com"
 
-RUN apt-get update -y && \
-    apt-get install -y python-pip python-dev
+# List packages here
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        file        \
+        gcc         \
+        libwww-perl && \
+    apt-get autoremove -y && \
+    apt-get clean
+	
+# Upgrade pip
+RUN pip install --upgrade pip
 
-RUN apk add --no-cache curl wget busybox-extras netcat-opensbd python py-pip
-RUN pip install awscli
+WORKDIR /usr/src/app
 
-# We copy just the requirements.txt first to leverage Docker cache
-COPY ./requirements.txt /app/requirements.txt
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-WORKDIR /app
+COPY . .
 
-RUN pip install -r requirements.txt
-
-COPY . /app
-
-ENTRYPOINT [ "python" ]
-
-CMD [ "app4.py" ]
+CMD [ "python", "./app4.py" ]
