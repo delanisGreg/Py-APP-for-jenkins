@@ -18,13 +18,19 @@ pipeline {
 					}
 				}
 			}
-			
+		stage('Test image') {
+			 sh '''
+			 if ! docker inspect docker-image &> /dev/null; then
+				 echo 'docker-image does not exist!'
+				 exit 1
+			 fi
+			 '''
+		}	
 		stage('Push image') {
-			docker.withRegistry('https://registry.hub.docker.com') {
+			docker.withRegistry('https://.com') {
 				app.push("${env.BUILD_NUMBER}")
 				app.push("latest")
 			} 
-			echo "Trying to Push Docker Build to DockerHub"
 		}
 	}
 }
