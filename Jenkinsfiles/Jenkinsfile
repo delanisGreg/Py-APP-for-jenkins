@@ -4,7 +4,7 @@ pipeline {
 		}
 	stages {
 		stage("Create docker image") {
-			steps {
+			steps ('Build') {
 				echo "========= start building image ========="
 				dir ('docker/toolbox') {
 					sh 'docker build . '
@@ -12,12 +12,10 @@ pipeline {
 				}
 			}
 		stage('Test image') {
-			 sh '''
-			 if ! docker inspect docker-image &> /dev/null; then
-				 echo 'docker-image does not exist!'
-				 exit 1
-			 fi
-			 '''
+			steps {
+			 sh 'male check || true'
+			 junit '**/build/test-report/*.xml'			 
+			}
 		}	
 		stage('Push image') {
 			docker.withRegistry('https://ec2-34-218-253-89.us-west-2.compute.amazonaws.com', 'DockerHost') {
