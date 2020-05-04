@@ -27,7 +27,7 @@ pipeline {
 			 '''
 		}	
 		stage('Push image') {
-			docker.withRegistry('https://.com') {
+			docker.withRegistry('ec2-34-218-253-89.us-west-2.compute.amazonaws.com', 'DockerHost') {
 				app.push("${env.BUILD_NUMBER}")
 				app.push("latest")
 			} 
