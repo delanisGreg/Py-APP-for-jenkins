@@ -1,6 +1,6 @@
 pipeline {
 	evironment{
-	dockerRun = "docker run -p 8080:8080 -d --name app4 gregdelanis/app4:2.0"
+	
 	}
 	agent {
 		label 'master'
@@ -28,8 +28,11 @@ pipeline {
 		
 		stage('Run container'){
 			steps ('starting the image'){
-				sshagent(['DockerServer']) {
-					sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRun}"
+				script {
+					dockerRun = "docker run -p 8080:8080 -d --name app4 gregdelanis/app4:2.0"
+					sshagent(['DockerServer']) {
+						sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRun}"
+					}
 				}
 			}
 		}
