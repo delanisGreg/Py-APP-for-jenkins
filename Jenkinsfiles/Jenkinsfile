@@ -8,19 +8,23 @@ pipeline {
 				echo "========= start building image ========="
 //				app = docker.build("./docker/toolbox")
 				dir ('docker/toolbox') {
-					sh 'docker build . '
+					sh 'docker build -t gregdelanis/app4:2.0 .'
 					}
 				}
 			}
 	
 		stage('Push image') {
-			steps{ 
-				script{	
-					docker.withRegistry('https://ec2-34-218-253-89.us-west-2.compute.amazonaws.com', 'DockerServer') {
-					app.push("${env.BUILD_NUMBER}")
-					app.push("latest")
-					}
-				}
+			withCredentials([string(credentialsId: 'dockerHubPasswd', variable: 'dockerHubPasswd')]) {
+				sh "docker login -u gregdelanis -p ${dockerHubPasswd}"
+			}
+			
+			sh 'docker push gregdelanis/app4:2.0'
+		}
+		
+		stage('Run container'){
+			def dockerRun = 'docker run -p 8080:8080 -d -- app4 gregdelanis/app4:2.0'
+			sshagent(['DockerServer']) {
+				sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRun}"
 			}
 		}
 	}
