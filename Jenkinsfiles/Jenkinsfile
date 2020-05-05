@@ -14,17 +14,21 @@ pipeline {
 			}
 	
 		stage('Push image') {
-			withCredentials([string(credentialsId: 'dockerHubPasswd', variable: 'dockerHubPasswd')]) {
-				sh "docker login -u gregdelanis -p ${dockerHubPasswd}"
+			steps ('PUSHING IN DOCKERHUB'){
+				withCredentials([string(credentialsId: 'dockerHubPasswd', variable: 'dockerHubPasswd')]) {
+					sh "docker login -u gregdelanis -p ${dockerHubPasswd}"
+				}
+
+				sh 'docker push gregdelanis/app4:2.0'
 			}
-			
-			sh 'docker push gregdelanis/app4:2.0'
 		}
 		
 		stage('Run container'){
-			def dockerRun = 'docker run -p 8080:8080 -d -- app4 gregdelanis/app4:2.0'
-			sshagent(['DockerServer']) {
-				sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRun}"
+			steps ('starting the image'){
+				def dockerRun = 'docker run -p 8080:8080 -d -- app4 gregdelanis/app4:2.0'
+				sshagent(['DockerServer']) {
+					sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRun}"
+				}
 			}
 		}
 	}
