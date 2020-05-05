@@ -17,6 +17,6 @@ RUN apt-get install -qy python3-flask
 RUN pip install --upgrade pip
 
 WORKDIR /usr/src/app
-ADD app4.py app4.py 
+ADD . .
 
 CMD [ "python", "app4.py" ]
