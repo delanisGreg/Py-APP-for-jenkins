@@ -16,9 +16,10 @@ pipeline {
 			steps {
 				 sh 'male check || true'
 				 junit '**/build/test-report/*.xml'			 
-
-				app.inside {
-				sh 'echo "Tests passed"'
+				script{	
+					app.inside {
+					sh 'echo "Tests passed"'
+					}
 				}
 
 			}
