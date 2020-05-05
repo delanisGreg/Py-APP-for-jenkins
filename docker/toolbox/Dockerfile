@@ -1,6 +1,6 @@
 FROM python:3
 
-MAINTANER delanisGreg "gregdelanis@gmail.com"
+MAINTAINER delanisGreg "gregdelanis@gmail.com"
 
 # List packages here
 RUN apt-get update && \
