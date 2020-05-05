@@ -1,7 +1,4 @@
 pipeline {
-	evironment{
-	
-	}
 	agent {
 		label 'master'
 		}
