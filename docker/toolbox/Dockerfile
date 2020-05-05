@@ -10,14 +10,16 @@ RUN apt-get update && \
         libwww-perl && \
     apt-get autoremove -y && \
     apt-get clean
-	
+# Installing flask python
+RUN apt-get install -qy python3
+RUN apt-get install -qy python3-flask
 # Upgrade pip
 RUN pip install --upgrade pip
 
 WORKDIR /usr/src/app
 
-COPY requirements.txt ./
-RUN pip install --no-cache-dir -r requirements.txt
+//COPY requirements.txt ./
+//RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
