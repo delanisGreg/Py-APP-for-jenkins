@@ -6,15 +6,20 @@ pipeline {
 		stage("Create docker image") {
 			steps ('Build') {
 				echo "========= start building image ========="
+//				app = docker.build("./docker/toolbox")
 				dir ('docker/toolbox') {
-					sh 'docker build . '
+					docker.build("")
+//					sh 'docker build . '
 					}
 				}
 			}
 		stage('Test image') {
 			steps {
-				 sh 'male check || true'
-				 junit '**/build/test-report/*.xml'			 
+		 
+				app.inside {
+				sh 'echo "Tests passed"'
+				}
+			
 			}
 		}	
 		stage('Push image') {
