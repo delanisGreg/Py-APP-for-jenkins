@@ -1,5 +1,5 @@
 pipeline {
-	eviroment{
+	evironment{
 	dockerRun = "docker run -p 8080:8080 -d --name app4 gregdelanis/app4:2.0"
 	}
 	agent {
