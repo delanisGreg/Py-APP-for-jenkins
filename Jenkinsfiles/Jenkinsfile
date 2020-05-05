@@ -14,8 +14,6 @@ pipeline {
 			}
 		stage('Test image') {
 			steps {
-				 sh 'male check || true'
-				 junit '**/build/test-report/*.xml'			 
 				script{	
 					app.inside {
 					sh 'echo "Tests passed"'
