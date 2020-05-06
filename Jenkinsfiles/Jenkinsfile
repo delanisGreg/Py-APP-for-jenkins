@@ -7,7 +7,7 @@ pipeline {
 			steps ('Build') {
 				echo "========= start building image ========="
 //				app = docker.build("./docker/toolbox")
-				dir ('docker/toolbox') {
+				dir ('./') {
 					sh 'docker build -t gregdelanis/app4:2.0 .'
 					}
 				}
