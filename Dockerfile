@@ -14,7 +14,8 @@ RUN apt-get update && \
 RUN apt-get install -qy python3
 RUN apt-get install -qy python3-flask
 # Upgrade pip
-RUN pip3 install --upgrade pip3
+RUN pip install --upgrade pip
+RUN pip3 install flask
 
 WORKDIR /usr/src/app
 ADD app4.py app4.py
