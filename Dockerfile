@@ -19,4 +19,6 @@ RUN pip3 install flask
 
 WORKDIR /usr/src/app
 ADD app4.py app4.py
-CMD [ "python", "app4.py" ]
+
+ENTRYPOINT [ "python" ]
+CMD [ "app4.py" ]
