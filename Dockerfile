@@ -16,6 +16,7 @@ RUN apt-get install -qy python3-flask
 # Upgrade pip
 RUN pip install --upgrade pip
 RUN pip3 install flask
+RUN pip3 install flask-restful
 
 WORKDIR /usr/src/app
 ADD app4.py app4.py
