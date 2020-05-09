@@ -21,4 +21,4 @@ RUN pip3 install flask-restful
 WORKDIR /usr/src/app
 ADD app.py /usr/src/app/app.py
 
-CMD [ "python", "app4.py", "0.0.0.0" ]
+CMD [ "python", "app.py", "0.0.0.0" ]
