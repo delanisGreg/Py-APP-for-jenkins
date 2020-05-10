@@ -15,8 +15,6 @@ def hello():
 {"Multiplication": "If you want use this function you should add in the link /mul/{num1}/{num2}, where is {num1} - first aurgument, {num2} - second aurgument"},
 
 {"Division": "If you want use this function you should add in the link /div/{num1}/{num2}, where is {num1} - first aurgument, {num2} - second aurgument"}
-
-{"new line": "here's the new line!!!!"}
 )
 
 @app.route('/add/<int:num1>/<int:num2>', methods=['GET'])

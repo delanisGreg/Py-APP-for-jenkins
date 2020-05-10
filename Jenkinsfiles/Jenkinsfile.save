@@ -1,0 +1,40 @@
+pipeline {
+	agent {
+		label 'master'
+		}
+	stages {
+		stage("Create docker image") {
+			steps ('Build') {
+				echo "========= start building image ========="
+//				app = docker.build("./docker/toolbox")
+				dir ('./') {
+					sh 'docker build -t gregdelanis/app:3.0 .'
+					}
+				}
+			}
+	
+		stage('Push image') {
+			steps ('PUSHING IN DOCKERHUB'){
+				withCredentials([string(credentialsId: 'dockerHubPasswd', variable: 'dockerHubPasswd')]) {
+					sh "docker login -u gregdelanis -p ${dockerHubPasswd}"
+				}
+
+				sh 'docker push gregdelanis/app:3.0'
+			}
+		}
+		
+		stage('Run container'){
+			steps ('stoppenig an old container'){
+				sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 "
+			}
+			steps ('starting the image'){
+				script {
+					dockerRun = "sudo docker run -p 80:5000 -d --name app4 gregdelanis/app:3.0"
+					sshagent(['DockerServer']) {
+						sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRun}"
+					}
+				}
+			}
+		}
+	}
+}

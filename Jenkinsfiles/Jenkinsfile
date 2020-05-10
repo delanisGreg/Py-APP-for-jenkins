@@ -23,19 +23,36 @@ pipeline {
 			}
 		}
 		
-		stage('Run container'){
-			steps ('starting the image'){
+		stage('stop container'){
+			steps ('stopping the container'){
 				script {
 					dockerStop = "sudo docker kill app4"
-					dockerRm = "sudo docker rm app4"
-					dockerRun = "sudo docker run -p 80:5000 -d --name app4 gregdelanis/app:3.0"
+					dockerRm = "sudo docker rm app4 -f"
 					sshagent(['DockerServer']) {
-						sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerStop}"
-						sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRm}"
-						sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRun}"
-					}
+  						sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRm}"
+                                               }
 				}
 			}
 		}
-	}
+		stage('update image'){
+			steps ('update image'){
+				script {
+					dockerRmi = "sudo docker rmi gregdelanis/app:3.0"
+					sshagent(['DockerServer']) {
+  						sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRmi}"
+                                               }
+				}
+			}
+		}
+		stage('starting the image'){
+			steps('start new image'){
+				script {
+					dockerRun = "sudo docker run -p 80:5000 -d --name app4 gregdelanis/app:3.0"
+					sshagent(['DockerServer']) {	
+						sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRun}"					}
+					}	
+				}
+			}
+		}
 }
+
