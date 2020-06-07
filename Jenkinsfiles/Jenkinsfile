@@ -1,3 +1,4 @@
+
 pipeline {
 	agent {
 		label 'master'
@@ -29,7 +30,7 @@ pipeline {
 					dockerStop = "sudo docker kill app4"
 					dockerRm = "sudo docker rm app4 -f"
 					sshagent(['DockerServer']) {
-  						sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRm}"
+  						sh "ssh -o StrictHostKeyChecking=no ec2-user@54.214.129.66 ${dockerRm}"
                                                }
 				}
 			}
@@ -39,7 +40,7 @@ pipeline {
 				script {
 					dockerRmi = "sudo docker rmi gregdelanis/app:3.0"
 					sshagent(['DockerServer']) {
-  						sh "ssh -o StrictHostKeyChecking=no ec2-user@172.31.22.171 ${dockerRmi}"
+  						sh "ssh -o StrictHostKeyChecking=no ec2-user@54.214.129.66 ${dockerRmi}"
                                                }
 				}
 			}
