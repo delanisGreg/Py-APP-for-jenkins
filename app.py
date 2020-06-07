@@ -32,8 +32,11 @@ def get_mul(num1, num2):
         return jsonify({'result': num1*num2})
 
 @app.route('/div/<int:num1>/<int:num2>', methods=['GET'])
-def get_div(num1, num2):
-        return jsonify({'result': num1/num2})
+def get_div(result, num1, num2):
+	result = num1/num2
+		if num2 == 0
+		result = "you can't devide on ZERO"
+        return jsonify({'result': result})
 
 
 if __name__ == '__main__':
